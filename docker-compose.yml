@@ -1,0 +1,20 @@
+services:
+  synthea:
+    build: ./synthea
+    container_name: synthea
+    volumes:
+      - ./synthea_output:/synthea/output
+    command: "./run_synthea -p 10" # Adjust parameters to generate 10 patients (or more)
+
+  fhir-server:
+    image: hapiproject/hapi:v6.8.0
+    container_name: hapi-fhir-server
+    ports:
+      - "8080:8080"
+    environment:
+      - HAPI_HOME=/var/lib/hapi
+    volumes:
+      - hapi-data:/var/lib/hapi
+
+volumes:
+  hapi-data:
